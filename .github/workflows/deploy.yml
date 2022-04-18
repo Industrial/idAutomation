@@ -8,10 +8,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Lua
-        uses: leafo/gh-actions-lua@v8
-        with:
-          luaVersion: "luajit-2.1.0-beta3"
       - name: Deploy Retail
         uses: BigWigsMods/packager@master
         env:
