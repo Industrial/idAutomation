@@ -8,3 +8,5 @@
 - Vendor Sell Grey Items
 - Summon Favorite Minipet
 - Mute Fizzle Sound (When you cannot cast something)
+- Add slash command `/rl` and `/reload` for reloading the UI.
+- Add slash command `/lfg` for opening the Group Finder Window.

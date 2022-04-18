@@ -90,6 +90,17 @@ function idAutomationMuteFizzleSound()
   MuteSoundFile(569776)
 end
 
+function idAutomationReloadSlashCommands()
+  SlashCMDList["IDAUTOMATION_RELOAD"] = ReloadUI
+  SLASH_IDAUTOMATION_RELOAD1 = "/reload"
+  SLASH_IDAUTOMATION_RELOAD1 = "/rl"
+end
+
+function idAutomationGroupFinderSlashCommands()
+  SlashCMDList["IDAUTOMATION_LFG"] = ReloadUI
+  SLASH_IDAUTOMATION_LFG1 = "/lfg"
+end
+
 idAutomationFrame:RegisterEvent('CONFIRM_BINDER')
 idAutomationFrame:RegisterEvent('CONFIRM_SUMMON')
 idAutomationFrame:RegisterEvent('PLAYER_DEAD')
@@ -124,3 +135,5 @@ idAutomationFrame:SetScript('OnEvent', function(self, event, ...)
 end)
 
 idAutomationMuteFizzleSound()
+idAutomationReloadSlashCommands()
+idAutomationGroupFinderSlashCommands()
