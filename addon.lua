@@ -82,6 +82,14 @@ function idAutomationSummonBattlePet()
   C_PetJournal.SummonRandomPet(true)
 end
 
+function idAutomationMuteFizzleSound()
+  MuteSoundFile(569772)
+  MuteSoundFile(569773)
+  MuteSoundFile(569774)
+  MuteSoundFile(569775)
+  MuteSoundFile(569776)
+end
+
 idAutomationFrame:RegisterEvent('CONFIRM_BINDER')
 idAutomationFrame:RegisterEvent('CONFIRM_SUMMON')
 idAutomationFrame:RegisterEvent('PLAYER_DEAD')
@@ -114,3 +122,5 @@ idAutomationFrame:SetScript('OnEvent', function(self, event, ...)
     idAutomationSummonBattlePet()
   end
 end)
+
+idAutomationMuteFizzleSound()

@@ -7,3 +7,4 @@
 - Vendor Repair
 - Vendor Sell Grey Items
 - Summon Favorite Minipet
+- Mute Fizzle Sound (When you cannot cast something)
