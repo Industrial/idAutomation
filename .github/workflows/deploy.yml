@@ -13,4 +13,4 @@ jobs:
         env:
           CF_API_KEY: ${{ secrets.CF_API_TOKEN }}
         with:
-          args: -g 9.0.5
+          args: -g 9.2.0
