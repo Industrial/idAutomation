@@ -91,13 +91,13 @@ function idAutomationMuteFizzleSound()
 end
 
 function idAutomationReloadSlashCommands()
-  SlashCMDList["IDAUTOMATION_RELOAD"] = ReloadUI
+  SlashCmdList["IDAUTOMATION_RELOAD"] = ReloadUI
   SLASH_IDAUTOMATION_RELOAD1 = "/reload"
   SLASH_IDAUTOMATION_RELOAD1 = "/rl"
 end
 
 function idAutomationGroupFinderSlashCommands()
-  SlashCMDList["IDAUTOMATION_LFG"] = ReloadUI
+  SlashCmdList["IDAUTOMATION_LFG"] = ReloadUI
   SLASH_IDAUTOMATION_LFG1 = "/lfg"
 end
 
