@@ -1,0 +1,12 @@
+## Interface: 90105
+## Interface-Retail: 90105
+## Title: idAutomation
+## X-Curse-Project-ID: 274419
+## X-WoWI-ID: 23978
+
+## Notes: Auto Accept, Vendor, Repair, Minipet
+## Author: Industrial
+## Version: v0.1.0
+## SavedVariables: idAutomationDB
+
+addon.lua

@@ -1,0 +1,22 @@
+name: Deploy
+on: [push, pull_request]
+jobs:
+  deploy:
+    name: Deploy
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Lua
+        uses: leafo/gh-actions-lua@v8
+        with:
+          luaVersion: "luajit-2.1.0-beta3"
+      - name: Deploy Retail
+        uses: BigWigsMods/packager@master
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_TOKEN }}
+          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
+        with:
+          args: -g 9.0.5
