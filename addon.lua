@@ -90,15 +90,59 @@ function idAutomationMuteFizzleSound()
   MuteSoundFile(569776)
 end
 
-function idAutomationReloadSlashCommands()
-  SlashCmdList["IDAUTOMATION_RELOAD"] = ReloadUI
-  SLASH_IDAUTOMATION_RELOAD1 = "/reload"
-  SLASH_IDAUTOMATION_RELOAD1 = "/rl"
+function idAutomationSlashCommands()
+  SlashCmdList['IDAUTOMATION_RELOAD'] = ReloadUI
+  SLASH_IDAUTOMATION_RELOAD1 = '/reload'
+  SLASH_IDAUTOMATION_RELOAD1 = '/rl'
+
+  SlashCmdList['IDAUTOMATION_LFG'] = function()
+    PVEFrame_ShowFrame('GroupFinderFrame')
+  end
+  SLASH_IDAUTOMATION_LFG1 = '/lfg'
+
+  SlashCmdList['IDAUTOMATION_PVP'] = function()
+    PVEFrame_ShowFrame('GroupFinderFrame')
+    PVPFrameTab2:Click()
+  end
+  SLASH_IDAUTOMATION_PVP1 = '/pvp'
+
+  SlashCmdList['IDAUTOMATION_CAL'] = function()
+    if not IsAddOnLoaded('Blizzard_Calendar') then
+         UIParentLoadAddOn('Blizzard_Calendar')
+    end
+
+    Calendar_Toggle()
+  end
+  SLASH_IDAUTOMATION_CAL1 = '/cal'
 end
 
-function idAutomationGroupFinderSlashCommands()
-  SlashCmdList["IDAUTOMATION_LFG"] = ReloadUI
-  SLASH_IDAUTOMATION_LFG1 = "/lfg"
+function idAutomationSendMail()
+  local recipient = SendMailNameEditBox:GetText()
+
+  if recipient == '' then
+    return
+  end
+
+  local subject = SendMailSubjectEditBox:GetText()
+
+  if subject == '' then
+    return
+  end
+
+  local freeSlots = 0
+  local slot
+  for slot = 1, 12 do
+    itemName, _, _, _ = GetSendMailItem(slot)
+    if itemName == nil then
+      freeSlots = freeSlots + 1
+    end
+  end
+
+  if freeSlots ~= 0 then
+    return
+  end
+
+  SendMail(recipient, subject, '')
 end
 
 idAutomationFrame:RegisterEvent('CONFIRM_BINDER')
@@ -131,9 +175,10 @@ idAutomationFrame:SetScript('OnEvent', function(self, event, ...)
     idAutomationSummonBattlePet()
   elseif (event == 'PLAYER_UNGHOST') then
     idAutomationSummonBattlePet()
+  elseif (event == 'MAIL_SEND_INFO_UPDATE') then
+    idAutomationSendMail()
   end
 end)
 
+idAutomationSlashCommands()
 idAutomationMuteFizzleSound()
-idAutomationReloadSlashCommands()
-idAutomationGroupFinderSlashCommands()

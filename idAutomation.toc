@@ -3,7 +3,7 @@
 ## Title: idAutomation
 ## X-Curse-Project-ID: 614932
 
-## Notes: Auto Accept, Vendor, Repair, Minipet
+## Notes: Auto Accept, Vendor, Repair, Minipet, Send Mail
 ## Author: Industrial
 ## Version: v0.3.1
 ## SavedVariables: idAutomationDB
