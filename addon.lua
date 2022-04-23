@@ -102,7 +102,7 @@ function idAutomationSlashCommands()
 
   SlashCmdList['IDAUTOMATION_PVP'] = function()
     PVEFrame_ShowFrame('GroupFinderFrame')
-    PVPFrameTab2:Click()
+    PVEFrameTab2:Click()
   end
   SLASH_IDAUTOMATION_PVP1 = '/pvp'
 
