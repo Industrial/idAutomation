@@ -39,3 +39,7 @@ Presses the Yes button for you, so you don't see the popups:
 
 - Auto Send: Sends mail when it has a recipient and the items are full so you
   can continue clicking items to send them all.
+
+### Tooltip
+
+- Anchor: Anchors the tooltip to the mouse.
