@@ -30,8 +30,9 @@ Presses the Yes button for you, so you don't see the popups:
 
 ### Slash Commands
 
-- `/rl` and `/reload`: Reloads the UI
-- `/lfg`: Opens the Group Finder Window
+- `/rl` and `/reload`: Reloads the UI.
+- `/lfg`: Opens the Group Finder Window.
+- `/pvp`: Opens the PVP Finder Window.
 - `/cal`: Shorthand for `/calendar`.
 
 ### Email
