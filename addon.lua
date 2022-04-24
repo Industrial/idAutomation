@@ -145,6 +145,14 @@ function idAutomationSendMail()
   SendMail(recipient, subject, '')
 end
 
+local idAutomationOriginalGameTooltipSetDefaultAnchor = GameTooltip_SetDefaultAnchor
+function idAutomationGameTooltipSetDefaultAnchor(tooltip, self)
+  idAutomationOriginalGameTooltipSetDefaultAnchor(tooltip, self)
+
+  tooltip:SetOwner(self, 'ANCHOR_CURSOR_RIGHT', 10, 10)
+end
+GameTooltip_SetDefaultAnchor = idAutomationGameTooltipSetDefaultAnchor
+
 idAutomationFrame:RegisterEvent('CONFIRM_BINDER')
 idAutomationFrame:RegisterEvent('CONFIRM_SUMMON')
 idAutomationFrame:RegisterEvent('PLAYER_DEAD')
