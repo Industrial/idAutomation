@@ -153,15 +153,75 @@ function idAutomationGameTooltipSetDefaultAnchor(tooltip, self)
 end
 GameTooltip_SetDefaultAnchor = idAutomationGameTooltipSetDefaultAnchor
 
+function idAutomationQuestStripText(text)
+  if not text then return end
+
+  text = text:gsub('|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
+  text = text:gsub('%[.*%]%s*', '')
+  text = text:gsub('(.+) %(.+%)', '%1')
+  text = text:trim()
+
+  return text
+end
+
+function idAutomationQuestShouldAutomate()
+  return not IsShiftKeyDown()
+end
+
+function idAutomationQuestAutomateGossipWindow()
+  local numActiveQuests
+  local numAvailableQuest
+  local numGossips
+
+  numActiveQuests = C_GossipInfo.GetNumActiveQuests()
+  if numActiveQuests > 0 then
+    for i = 1, numActiveQuests do
+      C_GossipInfo.SelectActiveQuest(i)
+    end
+  end
+
+  numAvailableQuests = C_GossipInfo.GetNumAvailableQuests()
+  if numAvailableQuests > 0 then
+    for i = 1, numAvailableQuests do
+      C_GossipInfo.SelectAvailableQuest(i)
+    end
+  end
+
+  numAvailableQuests = GetNumAvailableQuests()
+  if numAvailableQuests > 0 then
+    for i = 1, numAvailableQuests do
+      SelectAvailableQuest(i)
+    end
+  end
+
+  numActiveQuests = GetNumActiveQuests()
+  if numActiveQuests > 0 then
+    for i = 1, numActiveQuests do
+      SelectActiveQuest(i)
+    end
+  end
+
+  numGossips = C_GossipInfo.GetNumOptions()
+  if numGossips == 1 then
+    C_GossipInfo.SelectOption(1)
+  end
+end
+
 idAutomationFrame:RegisterEvent('CONFIRM_BINDER')
 idAutomationFrame:RegisterEvent('CONFIRM_SUMMON')
-idAutomationFrame:RegisterEvent('PLAYER_DEAD')
-idAutomationFrame:RegisterEvent('RESURRECT_REQUEST')
+idAutomationFrame:RegisterEvent('GOSSIP_SHOW')
 idAutomationFrame:RegisterEvent('MERCHANT_SHOW')
 idAutomationFrame:RegisterEvent('PLAYER_ALIVE')
+idAutomationFrame:RegisterEvent('PLAYER_DEAD')
 idAutomationFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 idAutomationFrame:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 idAutomationFrame:RegisterEvent('PLAYER_UNGHOST')
+idAutomationFrame:RegisterEvent('QUEST_AUTOCOMPLETE')
+idAutomationFrame:RegisterEvent('QUEST_COMPLETE')
+idAutomationFrame:RegisterEvent('QUEST_DETAIL')
+idAutomationFrame:RegisterEvent('QUEST_GREETING')
+idAutomationFrame:RegisterEvent('QUEST_PROGRESS')
+idAutomationFrame:RegisterEvent('RESURRECT_REQUEST')
 
 idAutomationFrame:SetScript('OnEvent', function(self, event, ...)
   if (event == 'CONFIRM_BINDER') then
@@ -185,6 +245,30 @@ idAutomationFrame:SetScript('OnEvent', function(self, event, ...)
     idAutomationSummonBattlePet()
   elseif (event == 'MAIL_SEND_INFO_UPDATE') then
     idAutomationSendMail()
+
+  elseif (event == 'QUEST_AUTOCOMPLETE') then
+    if not idAutomationQuestShouldAutomate() then return end
+    ShowQuestComplete(select(2, ...))
+  elseif (event == 'QUEST_COMPLETE') then
+    if not idAutomationQuestShouldAutomate() then return end
+    if GetNumQuestChoices() <= 1 then
+      GetQuestReward(1)
+    end
+    QuestFrameCompleteQuestButton:Click()
+  elseif (event == 'QUEST_DETAIL') then
+    if not idAutomationQuestShouldAutomate() then return end
+    AcceptQuest()
+  elseif (event == 'QUEST_PROGRESS') then
+    if not idAutomationQuestShouldAutomate() then return end
+    if IsQuestCompletable() then
+      CompleteQuest()
+    end
+  elseif (event == 'GOSSIP_SHOW') then
+    if not idAutomationQuestShouldAutomate() then return end
+    idAutomationQuestAutomateGossipWindow()
+  elseif (event == 'QUEST_GREETING') then
+    if not idAutomationQuestShouldAutomate() then return end
+    idAutomationQuestAutomateGossipWindow()
   end
 end)
 
