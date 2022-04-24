@@ -43,3 +43,11 @@ Presses the Yes button for you, so you don't see the popups:
 ### Tooltip
 
 - Anchor: Anchors the tooltip to the mouse.
+
+### Quest
+
+When you hold the Shift key, it will not do anything.
+
+- Accept: Accepts all quests.
+- Complete: Complete all quests that don't have multiple rewards.
+- Gossip: Skip all gossip's that have only 1 option.
