@@ -1,10 +1,19 @@
-local idAutomationFrame = CreateFrame('Frame')
+local idAutomation = {}
+_G.idAutomation = idAutomation
 
-function idAutomationAcceptHearthstoneBind()
+idAutomation.frame = CreateFrame('Frame')
+
+function idAutomation:loadAddon(name)
+  if not IsAddOnLoaded(name) then
+    UIParentLoadAddOn(name)
+  end
+end
+
+function idAutomation:acceptHearthstoneBind()
   StaticPopup1Button:Click()
 end
 
-function idAutomationAcceptSummon()
+function idAutomation:acceptSummon()
   if UnitAffectingCombat('player') then
     return
   end
@@ -13,7 +22,7 @@ function idAutomationAcceptSummon()
   C_SummonInfo.ConfirmSummon()
 end
 
-function idAutomationAcceptPVPRelease()
+function idAutomation:acceptPVPRelease()
   if UnitAffectingCombat('player') then
     return
   end
@@ -28,7 +37,7 @@ function idAutomationAcceptPVPRelease()
   end
 end
 
-function idAutomationAcceptResurrection()
+function idAutomation:acceptResurrection()
   if GetCorpseRecoveryDelay() == 0 then
     return
   end
@@ -37,7 +46,7 @@ function idAutomationAcceptResurrection()
   AcceptResurrect()
 end
 
-function idAutomationRepairGear()
+function idAutomation:repairGear()
   if not CanMerchantRepair() then
     return
   end
@@ -58,7 +67,7 @@ function idAutomationRepairGear()
   end
 end
 
-function idAutomationSellGreyItems()
+function idAutomation:sellGreyItems()
   local bag
   local slot
   for bag = 0, 4 do
@@ -74,7 +83,7 @@ function idAutomationSellGreyItems()
   end
 end
 
-function idAutomationSummonBattlePet()
+function idAutomation:summonBattlePet()
   if UnitAffectingCombat('player') then
     return
   end
@@ -82,7 +91,7 @@ function idAutomationSummonBattlePet()
   C_PetJournal.SummonRandomPet(true)
 end
 
-function idAutomationMuteFizzleSound()
+function idAutomation:muteFizzleSound()
   MuteSoundFile(569772)
   MuteSoundFile(569773)
   MuteSoundFile(569774)
@@ -90,7 +99,15 @@ function idAutomationMuteFizzleSound()
   MuteSoundFile(569776)
 end
 
-function idAutomationSlashCommands()
+function idAutomation:toggleCollectionsFrame()
+  if CollectionsJournal:IsShown() then
+    CollectionsJournal:Hide()
+  else
+    CollectionsJournal:Show()
+  end
+end
+
+function idAutomation:slashCommands()
   SlashCmdList['IDAUTOMATION_RELOAD'] = ReloadUI
   SLASH_IDAUTOMATION_RELOAD1 = '/reload'
   SLASH_IDAUTOMATION_RELOAD1 = '/rl'
@@ -107,16 +124,56 @@ function idAutomationSlashCommands()
   SLASH_IDAUTOMATION_PVP1 = '/pvp'
 
   SlashCmdList['IDAUTOMATION_CAL'] = function()
-    if not IsAddOnLoaded('Blizzard_Calendar') then
-         UIParentLoadAddOn('Blizzard_Calendar')
-    end
+    idAutomation:loadAddon('Blizzard_Calendar')
 
     Calendar_Toggle()
   end
   SLASH_IDAUTOMATION_CAL1 = '/cal'
+
+  SlashCmdList['IDAUTOMATION_COLLECTIONS'] = function()
+    idAutomation:loadAddon('Blizzard_Collections')
+    idAutomation:toggleCollectionsFrame()
+  end
+  SLASH_IDAUTOMATION_COLLECTIONS1 = '/collections'
+
+  SlashCmdList['IDAUTOMATION_MOUNTS'] = function()
+    idAutomation:loadAddon('Blizzard_Collections')
+    CollectionsJournal:Show()
+    CollectionsJournal_SetTab(CollectionsJournal, 1)
+  end
+  SLASH_IDAUTOMATION_MOUNTS1 = '/mounts'
+
+  SlashCmdList['IDAUTOMATION_PETS'] = function()
+    idAutomation:loadAddon('Blizzard_Collections')
+    idAutomation:toggleCollectionsFrame()
+    CollectionsJournal:Show()
+    CollectionsJournal_SetTab(CollectionsJournal, 2)
+  end
+  SLASH_IDAUTOMATION_PETS1 = '/pets'
+
+  SlashCmdList['IDAUTOMATION_TOYS'] = function()
+    idAutomation:loadAddon('Blizzard_Collections')
+    CollectionsJournal:Show()
+    CollectionsJournal_SetTab(CollectionsJournal, 3)
+  end
+  SLASH_IDAUTOMATION_TOYS1 = '/toys'
+
+  SlashCmdList['IDAUTOMATION_HEIRLOOMS'] = function()
+    idAutomation:loadAddon('Blizzard_Collections')
+    CollectionsJournal:Show()
+    CollectionsJournal_SetTab(CollectionsJournal, 4)
+  end
+  SLASH_IDAUTOMATION_HEIRLOOMS1 = '/heirlooms'
+
+  SlashCmdList['IDAUTOMATION_APPEARANCES'] = function()
+    idAutomation:loadAddon('Blizzard_Collections')
+    CollectionsJournal:Show()
+    CollectionsJournal_SetTab(CollectionsJournal, 5)
+  end
+  SLASH_IDAUTOMATION_APPEARANCES1 = '/appearances'
 end
 
-function idAutomationSendMail()
+function idAutomation:sendMail()
   local recipient = SendMailNameEditBox:GetText()
 
   if recipient == '' then
@@ -145,15 +202,14 @@ function idAutomationSendMail()
   SendMail(recipient, subject, '')
 end
 
-local idAutomationOriginalGameTooltipSetDefaultAnchor = GameTooltip_SetDefaultAnchor
-function idAutomationGameTooltipSetDefaultAnchor(tooltip, self)
-  idAutomationOriginalGameTooltipSetDefaultAnchor(tooltip, self)
+idAutomation.OriginalGameTooltipSetDefaultAnchor = GameTooltip_SetDefaultAnchor
+GameTooltip_SetDefaultAnchor = function(tooltip, self)
+  idAutomation.OriginalGameTooltipSetDefaultAnchor(tooltip, self)
 
   tooltip:SetOwner(self, 'ANCHOR_CURSOR_RIGHT', 10, 10)
 end
-GameTooltip_SetDefaultAnchor = idAutomationGameTooltipSetDefaultAnchor
 
-function idAutomationQuestStripText(text)
+function idAutomation:questStripText(text)
   if not text then return end
 
   text = text:gsub('|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
@@ -164,11 +220,11 @@ function idAutomationQuestStripText(text)
   return text
 end
 
-function idAutomationQuestShouldAutomate()
+function idAutomation:questShouldAutomate()
   return not IsShiftKeyDown()
 end
 
-function idAutomationQuestAutomateGossipWindow()
+function idAutomation:questAutomateGossipWindow()
   local numActiveQuests
   local numAvailableQuest
   local numGossips
@@ -207,70 +263,70 @@ function idAutomationQuestAutomateGossipWindow()
   end
 end
 
-idAutomationFrame:RegisterEvent('CONFIRM_BINDER')
-idAutomationFrame:RegisterEvent('CONFIRM_SUMMON')
-idAutomationFrame:RegisterEvent('GOSSIP_SHOW')
-idAutomationFrame:RegisterEvent('MERCHANT_SHOW')
-idAutomationFrame:RegisterEvent('PLAYER_ALIVE')
-idAutomationFrame:RegisterEvent('PLAYER_DEAD')
-idAutomationFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
-idAutomationFrame:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
-idAutomationFrame:RegisterEvent('PLAYER_UNGHOST')
-idAutomationFrame:RegisterEvent('QUEST_AUTOCOMPLETE')
-idAutomationFrame:RegisterEvent('QUEST_COMPLETE')
-idAutomationFrame:RegisterEvent('QUEST_DETAIL')
-idAutomationFrame:RegisterEvent('QUEST_GREETING')
-idAutomationFrame:RegisterEvent('QUEST_PROGRESS')
-idAutomationFrame:RegisterEvent('RESURRECT_REQUEST')
+idAutomation.frame:RegisterEvent('CONFIRM_BINDER')
+idAutomation.frame:RegisterEvent('CONFIRM_SUMMON')
+idAutomation.frame:RegisterEvent('GOSSIP_SHOW')
+idAutomation.frame:RegisterEvent('MERCHANT_SHOW')
+idAutomation.frame:RegisterEvent('PLAYER_ALIVE')
+idAutomation.frame:RegisterEvent('PLAYER_DEAD')
+idAutomation.frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+idAutomation.frame:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
+idAutomation.frame:RegisterEvent('PLAYER_UNGHOST')
+idAutomation.frame:RegisterEvent('QUEST_AUTOCOMPLETE')
+idAutomation.frame:RegisterEvent('QUEST_COMPLETE')
+idAutomation.frame:RegisterEvent('QUEST_DETAIL')
+idAutomation.frame:RegisterEvent('QUEST_GREETING')
+idAutomation.frame:RegisterEvent('QUEST_PROGRESS')
+idAutomation.frame:RegisterEvent('RESURRECT_REQUEST')
 
-idAutomationFrame:SetScript('OnEvent', function(self, event, ...)
+idAutomation.frame:SetScript('OnEvent', function(self, event, ...)
   if (event == 'CONFIRM_BINDER') then
-    idAutomationAcceptHearthstoneBind()
+    idAutomation:acceptHearthstoneBind()
   elseif (event == 'CONFIRM_SUMMON') then
-    idAutomationAcceptSummon()
+    idAutomation:acceptSummon()
   elseif (event == 'PLAYER_DEAD') then
-    idAutomationAcceptPVPRelease()
+    idAutomation:acceptPVPRelease()
   elseif (event == 'RESURRECT_REQUEST') then
-    idAutomationAcceptResurrection()
+    idAutomation:acceptResurrection()
   elseif (event == 'MERCHANT_SHOW') then
-    idAutomationRepairGear()
-    idAutomationSellGreyItems()
+    idAutomation:repairGear()
+    idAutomation:sellGreyItems()
   elseif (event == 'PLAYER_ALIVE') then
-    idAutomationSummonBattlePet()
+    idAutomation:summonBattlePet()
   elseif (event == 'PLAYER_ENTERING_WORLD') then
-    idAutomationSummonBattlePet()
+    idAutomation:summonBattlePet()
   elseif (event == 'PLAYER_MOUNT_DISPLAY_CHANGED') then
-    idAutomationSummonBattlePet()
+    idAutomation:summonBattlePet()
   elseif (event == 'PLAYER_UNGHOST') then
-    idAutomationSummonBattlePet()
+    idAutomation:summonBattlePet()
   elseif (event == 'MAIL_SEND_INFO_UPDATE') then
-    idAutomationSendMail()
+    idAutomation:sendMail()
 
   elseif (event == 'QUEST_AUTOCOMPLETE') then
-    if not idAutomationQuestShouldAutomate() then return end
+    if not idAutomation:questShouldAutomate() then return end
     ShowQuestComplete(select(2, ...))
   elseif (event == 'QUEST_COMPLETE') then
-    if not idAutomationQuestShouldAutomate() then return end
+    if not idAutomation:questShouldAutomate() then return end
     if GetNumQuestChoices() <= 1 then
       GetQuestReward(1)
     end
     QuestFrameCompleteQuestButton:Click()
   elseif (event == 'QUEST_DETAIL') then
-    if not idAutomationQuestShouldAutomate() then return end
+    if not idAutomation:questShouldAutomate() then return end
     AcceptQuest()
   elseif (event == 'QUEST_PROGRESS') then
-    if not idAutomationQuestShouldAutomate() then return end
+    if not idAutomation:questShouldAutomate() then return end
     if IsQuestCompletable() then
       CompleteQuest()
     end
   elseif (event == 'GOSSIP_SHOW') then
-    if not idAutomationQuestShouldAutomate() then return end
-    idAutomationQuestAutomateGossipWindow()
+    if not idAutomation:questShouldAutomate() then return end
+    idAutomation:questAutomateGossipWindow()
   elseif (event == 'QUEST_GREETING') then
-    if not idAutomationQuestShouldAutomate() then return end
-    idAutomationQuestAutomateGossipWindow()
+    if not idAutomation:questShouldAutomate() then return end
+    idAutomation:questAutomateGossipWindow()
   end
 end)
 
-idAutomationSlashCommands()
-idAutomationMuteFizzleSound()
+idAutomation:slashCommands()
+idAutomation:muteFizzleSound()
