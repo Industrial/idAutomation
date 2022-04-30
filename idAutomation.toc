@@ -5,7 +5,7 @@
 
 ## Notes: Auto Accept, Vendor, Repair, Minipet, Send Mail
 ## Author: Industrial
-## Version: v0.5.0
+## Version: v0.6.0
 ## SavedVariables: idAutomationDB
 
 addon.lua
