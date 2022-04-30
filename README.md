@@ -34,6 +34,12 @@ Presses the Yes button for you, so you don't see the popups:
 - `/lfg`: Opens the Group Finder Window.
 - `/pvp`: Opens the PVP Finder Window.
 - `/cal`: Shorthand for `/calendar`.
+- `/collections`: Toggles the Collections Window.
+- `/mounts`: Opens the Collections Window and selects the Mounts Tab.
+- `/pets`: Opens the Collections Window and selects the Pets Tab.
+- `/toys`: Opens the Collections Window and selects the Toy Box Tab.
+- `/heirlooms`: Opens the Collections Window and selects the Heirlooms Tab.
+- `/appearances`: Opens the Collections Window and selects the Appearances Tab.
 
 ### Email
 
